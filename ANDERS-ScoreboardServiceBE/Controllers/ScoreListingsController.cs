@@ -29,9 +29,35 @@ namespace ANDERS_ScoreboardServiceBE.Controllers
         [HttpGet]
         public IActionResult GetScoreListing([FromQuery] Parameters parameters)
         {
-            var scores = PagedList<ScoreListing>.ToPagedList(_context.ScoreListing.OrderBy(p => p.Name),
-                parameters.PageNumber,
-                parameters.PageSize);
+            PagedList<ScoreListing> scores;
+            switch (parameters.Sort)
+            {
+                case "name asc":
+                    scores = PagedList<ScoreListing>.ToPagedList(_context.ScoreListing.OrderBy(p => p.Name),
+                                    parameters.PageNumber,
+                                    parameters.PageSize);
+                    break;
+                case "name desc":
+                    scores = PagedList<ScoreListing>.ToPagedList(_context.ScoreListing.OrderByDescending(p => p.Name),
+                                    parameters.PageNumber,
+                                    parameters.PageSize);
+                    break;
+                case "score asc":
+                    scores = PagedList<ScoreListing>.ToPagedList(_context.ScoreListing.OrderBy(p => p.Score),
+                                    parameters.PageNumber,
+                                    parameters.PageSize);
+                    break;
+                case "score desc":
+                    scores = PagedList<ScoreListing>.ToPagedList(_context.ScoreListing.OrderByDescending(p => p.Score),
+                                    parameters.PageNumber,
+                                    parameters.PageSize);
+                    break;
+                default:
+                    scores = PagedList<ScoreListing>.ToPagedList(_context.ScoreListing,
+                                    parameters.PageNumber,
+                                    parameters.PageSize);
+                    break;
+            }
 
             var metadata = new
             {

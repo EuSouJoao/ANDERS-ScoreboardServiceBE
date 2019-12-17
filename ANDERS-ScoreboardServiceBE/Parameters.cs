@@ -11,6 +11,7 @@ namespace ANDERS_ScoreboardServiceBE
         public int PageNumber { get; set; } = 1;
 
         private int _pageSize = 10;
+        public string Sort;
         public int PageSize
         {
             get
